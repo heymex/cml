@@ -1,0 +1,427 @@
+Building configuration...
+
+Current configuration : 12649 bytes
+!
+! Last configuration change at 17:37:42 UTC Tue Aug 6 2024
+!
+version 17.12
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform punt-keepalive disable-kernel-core
+!
+hostname leaf1
+!
+!
+vrf definition Mgmt-vrf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+vrf definition S1-EVPN
+ rd 1:1
+ !
+ address-family ipv4
+  route-target export 1:1
+  route-target import 1:1
+  route-target export 1:1 stitching
+  route-target import 1:1 stitching
+ exit-address-family
+!
+no logging console
+no aaa new-model
+switch 1 provision c9kv-q200-8p
+!
+!
+!
+!
+ip routing
+!
+ip multicast-routing 
+!
+!
+!
+login on-success log
+vtp version 1
+!
+!
+!
+!
+!
+!
+!
+l2vpn evpn
+ replication-type static
+!
+l2vpn evpn instance 10 vlan-based
+ encapsulation vxlan
+!
+l2vpn evpn instance 20 vlan-based
+ encapsulation vxlan
+!
+!
+crypto pki trustpoint TP-self-signed-2710989922
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2710989922
+ revocation-check none
+ rsakeypair TP-self-signed-2710989922
+ hash sha256
+!
+crypto pki trustpoint SLA-TrustPoint
+ enrollment pkcs12
+ revocation-check crl
+ hash sha256
+!
+!
+crypto pki certificate chain TP-self-signed-2710989922
+ certificate self-signed 01
+  30820330 30820218 A0030201 02020101 300D0609 2A864886 F70D0101 0B050030 
+  31312F30 2D060355 04030C26 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 32373130 39383939 3232301E 170D3234 30383035 32303536 
+  34385A17 0D333430 38303532 30353634 385A3031 312F302D 06035504 030C2649 
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D32 37313039 
+  38393932 32308201 22300D06 092A8648 86F70D01 01010500 0382010F 00308201 
+  0A028201 0100E361 D5148D1A A16C5151 EB783AFB 058F7319 918D070C C2CD4D37 
+  4768C6D7 1A465732 DBBE84FF 4A76FA0D 3F1FEE2F E030767F BC47F3BD D49E2FFF 
+  EA92006E C26F810A FF51EAAC B045D8B6 D793E9BA E5607353 E94B022A B1D1A16E 
+  F1AF416E CF90882D 7CC8BCA1 3E46B7B8 6A223FED 57EE1829 871273F8 D8B039AA 
+  068C7D97 5A7F110C 95B7F04D 06B6F57E F46F0F94 1AD44E49 19F213F6 9C123B30 
+  93A61C88 CD0596D3 8901E503 C62A31B6 75295DCB 3B2B5763 B38A59DE 5A8E96E5 
+  ECBBB875 145F0955 0D036A2E ABEF4C21 98D7E292 2C47D4DE 0DBF0199 5F16E4CA 
+  0E2431E7 0C507C73 89E05868 6B87ABA9 0DA2F46E 7A817247 BA83F558 78AA1AAD 
+  05E1CE3D 29690203 010001A3 53305130 1D060355 1D0E0416 0414624C 28062CCD 
+  E2C8708E 212786F9 414C3D43 9B10301F 0603551D 23041830 16801462 4C28062C 
+  CDE2C870 8E212786 F9414C3D 439B1030 0F060355 1D130101 FF040530 030101FF 
+  300D0609 2A864886 F70D0101 0B050003 82010100 7CE87FC9 167E48DA 8243395C 
+  1EC9BFB6 E05F034D E0172176 CE95BBBD 9FD97FE8 04EA7305 4A26CEAF 67ED0CBF 
+  5386A15A 34307B3F 3E4384F6 5FA8749F 1E9D1D89 6158AD1A B5549AC6 F9D19DBC 
+  ECDFADF5 2DF7B65A 5D0C16F2 0F90EA57 203FE36E 33EB2DA5 E6DAF052 07ED5A5B 
+  B2E0B1DD DBF550BA FF91D082 2BA89C05 BADFABF4 CBEB7F6F FE612387 698EB79E 
+  53BE0CF5 4D2B4104 8DE4FDF3 5E261850 417A38CA 2480970F E9AE43D2 E066E894 
+  C4056325 BC876175 56E9336C AD06F42A E07F731C BB228A88 4E28F261 7BCA4FE8 
+  5BCA0893 8B9822EF F56C6742 20753EAC 25B904A7 B1F672F0 BDFCFA88 837776C7 
+  F4C82441 3D64132D AE920D41 DD5D9A39 D67C4E3A
+  	quit
+crypto pki certificate chain SLA-TrustPoint
+ certificate ca 01
+  30820321 30820209 A0030201 02020101 300D0609 2A864886 F70D0101 0B050030 
+  32310E30 0C060355 040A1305 43697363 6F312030 1E060355 04031317 43697363 
+  6F204C69 63656E73 696E6720 526F6F74 20434130 1E170D31 33303533 30313934 
+  3834375A 170D3338 30353330 31393438 34375A30 32310E30 0C060355 040A1305 
+  43697363 6F312030 1E060355 04031317 43697363 6F204C69 63656E73 696E6720 
+  526F6F74 20434130 82012230 0D06092A 864886F7 0D010101 05000382 010F0030 
+  82010A02 82010100 A6BCBD96 131E05F7 145EA72C 2CD686E6 17222EA1 F1EFF64D 
+  CBB4C798 212AA147 C655D8D7 9471380D 8711441E 1AAF071A 9CAE6388 8A38E520 
+  1C394D78 462EF239 C659F715 B98C0A59 5BBB5CBD 0CFEBEA3 700A8BF7 D8F256EE 
+  4AA4E80D DB6FD1C9 60B1FD18 FFC69C96 6FA68957 A2617DE7 104FDC5F EA2956AC 
+  7390A3EB 2B5436AD C847A2C5 DAB553EB 69A9A535 58E9F3E3 C0BD23CF 58BD7188 
+  68E69491 20F320E7 948E71D7 AE3BCC84 F10684C7 4BC8E00F 539BA42B 42C68BB7 
+  C7479096 B4CB2D62 EA2F505D C7B062A4 6811D95B E8250FC4 5D5D5FB8 8F27D191 
+  C55F0D76 61F9A4CD 3D992327 A8BB03BD 4E6D7069 7CBADF8B DF5F4368 95135E44 
+  DFC7C6CF 04DD7FD1 02030100 01A34230 40300E06 03551D0F 0101FF04 04030201 
+  06300F06 03551D13 0101FF04 05300301 01FF301D 0603551D 0E041604 1449DC85 
+  4B3D31E5 1B3E6A17 606AF333 3D3B4C73 E8300D06 092A8648 86F70D01 010B0500 
+  03820101 00507F24 D3932A66 86025D9F E838AE5C 6D4DF6B0 49631C78 240DA905 
+  604EDCDE FF4FED2B 77FC460E CD636FDB DD44681E 3A5673AB 9093D3B1 6C9E3D8B 
+  D98987BF E40CBD9E 1AECA0C2 2189BB5C 8FA85686 CD98B646 5575B146 8DFC66A8 
+  467A3DF4 4D565700 6ADF0F0D CF835015 3C04FF7C 21E878AC 11BA9CD2 55A9232C 
+  7CA7B7E6 C1AF74F6 152E99B7 B1FCF9BB E973DE7F 5BDDEB86 C71E3B49 1765308B 
+  5FB0DA06 B92AFE7F 494E8A9E 07B85737 F3A58BE1 1A48A229 C37C1E69 39F08678 
+  80DDCD16 D6BACECA EEBC7CF9 8428787B 35202CDC 60E4616A B623CDBD 230E3AFB 
+  418616A9 4093E049 4D10AB75 27E86F73 932E35B5 8862FDAE 0275156F 719BB2F0 
+  D697DF7F 28
+  	quit
+!
+!
+license boot level network-advantage
+memory free low-watermark processor 179720
+!
+diagnostic bootup level minimal
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+!
+!
+!
+!
+redundancy
+ mode sso
+!
+!
+!
+!
+!
+vlan configuration 10
+ member evpn-instance 10 vni 10010
+vlan configuration 20
+ member evpn-instance 20 vni 10020
+vlan configuration 3000
+ member vni 33000
+!
+vlan 3000 
+!
+!
+class-map match-any system-cpp-police-mac-learning
+  description MAC Learning
+class-map match-any system-cpp-police-mcast-data
+  description MCAST Data traffic
+class-map match-any system-cpp-police-topology-control
+  description Topology control - STP
+class-map match-any system-cpp-police-unknown-uc
+  description Unknown UC Packets
+class-map match-any system-cpp-police-sw-forward
+  description Software forwarding
+class-map match-any system-cpp-police-proto-snoop-v6
+  description Protocol snooping v6
+class-map match-any system-cpp-default
+  description Inter FED Traffic 
+class-map match-any system-cpp-police-proto-snoop-v4
+  description Protocol snooping v4
+class-map match-any system-cpp-police-rip-bc
+  description RIP Broadcast
+class-map match-any system-cpp-police-svl-ctrl
+  description NGSVL IPC Traffic
+class-map match-any system-cpp-police-mpls-oam
+  description MPLS OAM (traceroute, ping etc)
+class-map match-any system-cpp-police-dhcp-v6
+  description DHCP V6
+class-map match-any system-cpp-police-dhcp-v4
+  description DHCP V4
+class-map match-any system-cpp-police-forus
+  description Forus Address resolution and Forus traffic
+class-map match-any system-cpp-police-icmp-v6
+  description ICMP redirect, ICMP_GEN over IPv6
+class-map match-any system-cpp-police-icmp-v4
+  description ICMP redirect, ICMP_GEN over IPv4
+class-map match-any system-cpp-police-ospf-v6
+  description OSPF over IPv6
+class-map match-any system-cpp-police-ospf-v4
+  description OSPF over IPv4
+class-map match-any system-cpp-police-arp
+  description Address Resolution Protocol
+class-map match-any system-cpp-police-igrp-v4
+  description IGRP and EIGRP over IPv4
+class-map match-any system-cpp-police-fhrp-v4
+  description VRRP, HSRP, GLBP over IPv4
+class-map match-any system-cpp-police-igrp-v6
+  description IGRP and EIGRP over IPv6
+class-map match-any system-cpp-police-fhrp-v6
+  description VRRP, HSRP, GLBP over IPv6
+class-map match-any system-cpp-police-fragment-v4
+  description IPv4 Fragmented Packets
+class-map match-any system-cpp-police-fragment-v6
+  description IPv6 Fragmented Packets
+class-map match-any system-cpp-police-ldp-v4
+  description LDP (MPLS) over IPv4
+class-map match-any system-cpp-police-ldp-v6
+  description LDP (MPLS) over IPv6
+class-map match-any system-cpp-police-l2-control
+  description L2 control
+class-map match-any system-cpp-police-lacp
+  description LACP control traffic for ether channel
+class-map match-any system-cpp-police-bgp-v4
+  description BGP sessions over IPv4
+class-map match-any system-cpp-police-bgp-v6
+  description BGP sessions over IPv6
+class-map match-any system-cpp-police-rip-v6
+  description RIP over IPv6
+class-map match-any system-cpp-police-alt-sw-forward
+  description Alternate Software forwarding
+class-map match-any system-cpp-police-rip-v4
+  description RIP over IPv4
+class-map match-any system-cpp-police-mtu-ttl-fail
+  description MTU/TTL 0/TTL 1 failures
+class-map match-any system-cpp-police-isis
+  description IS-IS protocol
+class-map match-any system-cpp-police-bfd-v4
+  description BFD and BFD Echo over IPv4
+class-map match-any system-cpp-police-udp-v4
+  description UDP V4
+class-map match-any system-cpp-police-mcast-rpf-fail
+  description MCAST Data RPF fail
+class-map match-any system-cpp-police-bfd-v6
+  description BFD and BFD Echo over IPv6
+class-map match-any system-cpp-police-udp-v6
+  description UDP V6
+class-map match-any non-client-nrt-class
+class-map match-any system-cpp-police-tcp-v6
+  description TCP V6
+class-map match-any system-cpp-police-tcp-v4
+  description TCP V4
+class-map match-any system-cpp-default-v6
+  description Inter FED Traffic 
+class-map match-any system-cpp-default-v4
+  description Inter FED Traffic 
+class-map match-any system-cpp-police-dhcp-snooping
+  description DHCP snooping
+class-map match-any system-cpp-police-svl-ipc
+  description NGSVL IPC Traffic
+class-map match-any system-cpp-police-mcast-ctrl-v4
+  description MCAST control packets over IPv4
+class-map match-any system-cpp-police-system-critical
+  description System Critical and Gold Pkt
+class-map match-any system-cpp-police-mcast-register-v4
+  description MCAST v4 Register traffic
+class-map match-any system-cpp-police-lisp-ctrl
+  description LISP Control Packets
+class-map match-any system-cpp-police-mcast-ctrl-v6
+  description MCAST control packets over IPv6
+class-map match-any system-cpp-police-mcast-register-v6
+  description MCAST v6 Register traffic
+!
+policy-map system-cpp-policy
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ no ip address
+ ip pim sparse-mode
+!
+interface Loopback1
+ ip address 10.2.254.1 255.255.255.255
+!
+interface GigabitEthernet0/0
+ vrf forwarding Mgmt-vrf
+ ip address dhcp
+ negotiation auto
+!
+interface GigabitEthernet1/0/1
+ no switchport
+ ip address 172.16.11.2 255.255.255.252
+ ip pim sparse-mode
+!
+interface GigabitEthernet1/0/2
+ no switchport
+ ip address 172.16.21.2 255.255.255.252
+ ip pim sparse-mode
+!
+interface GigabitEthernet1/0/3
+!
+interface GigabitEthernet1/0/4
+!
+interface GigabitEthernet1/0/5
+ description SERVER-0
+ switchport access vlan 10
+!
+interface GigabitEthernet1/0/6
+ switchport access vlan 20
+!
+interface GigabitEthernet1/0/7
+!
+interface GigabitEthernet1/0/8
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan10
+ mac-address 0010.0010.0010
+ vrf forwarding S1-EVPN
+ ip address 192.168.10.254 255.255.255.0
+!
+interface Vlan20
+ mac-address 0010.0010.0020
+ vrf forwarding S1-EVPN
+ ip address 192.168.20.254 255.255.255.0
+!
+interface Vlan3000
+ vrf forwarding S1-EVPN
+ ip unnumbered Loopback1
+ no autostate
+!
+interface nve1
+ no ip address
+ source-interface Loopback1
+ host-reachability protocol bgp
+ member vni 10010 mcast-group 225.0.0.10
+ member vni 10020 mcast-group 225.0.0.20
+ member vni 33000 vrf S1-EVPN
+!
+router bgp 65002
+ bgp log-neighbor-changes
+ no bgp default ipv4-unicast
+ neighbor 172.16.11.1 remote-as 65001
+ neighbor 172.16.11.1 ebgp-multihop 255
+ neighbor 172.16.21.1 remote-as 65001
+ neighbor 172.16.21.1 ebgp-multihop 255
+ !
+ address-family ipv4
+  redistribute connected
+  neighbor 172.16.11.1 activate
+  neighbor 172.16.11.1 allowas-in 1
+  neighbor 172.16.21.1 activate
+  neighbor 172.16.21.1 allowas-in 1
+  maximum-paths 2
+ exit-address-family
+ !
+ address-family l2vpn evpn
+  neighbor 172.16.11.1 activate
+  neighbor 172.16.11.1 send-community both
+  neighbor 172.16.11.1 allowas-in 1
+  neighbor 172.16.21.1 activate
+  neighbor 172.16.21.1 send-community both
+  neighbor 172.16.21.1 allowas-in 1
+ exit-address-family
+ !
+ address-family ipv4 vrf S1-EVPN
+  advertise l2vpn evpn
+  redistribute connected
+  maximum-paths 2
+ exit-address-family
+!
+ip forward-protocol nd
+ip tcp mss 1280
+ip tcp window-size 212000
+ip http server
+ip http authentication local
+ip http secure-server
+ip pim rp-address 10.2.254.1
+ip ssh bulk-mode 131072
+!
+!
+!
+!
+!
+!
+control-plane
+ service-policy input system-cpp-policy
+!
+!
+!
+line con 0
+ exec-timeout 0 0
+ stopbits 1
+line vty 0 1
+ exec-timeout 0 0
+ login
+ transport input ssh
+line vty 2
+ exec-timeout 0 0
+ login
+ length 0
+ transport input ssh
+line vty 3 4
+ exec-timeout 0 0
+ login
+ transport input ssh
+line vty 5 15
+ login
+ transport input ssh
+!
+!
+!
+!
+!
+!
+end
